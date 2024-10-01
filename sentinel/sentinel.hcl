@@ -1,26 +1,20 @@
-import "static" "software_inventory" {
-    source = "./software_inventory/software_inventory.json"
-    format = "json"
-}
-
-policy "valid_instance_type" {
-    source = "./policies/policy1.sentinel"
-
-    params = {
-        instance_type = "t3.large"
-        instance_region = "us-east-1"
+sentinel {
+    features = {
+        terraform = true
     }
 }
 
-policy "std_imports" {
-    source = "./policies/std_imports.sentinel"
+import "plugin" "tfplan/v2" {
+  config = {
+    plan_path = "/home/ecasale/Desktop/curso_terraform/Ejercicio-martes-curso-avanzado-terraform/plan.json"
+  }
 }
 
-policy "valid_json_import" {
-    source = "./policies/json_import.sentinel"
+policy "valid_instance_type" {
+    source = "./policies/instances.sentinel"
 
     params = {
-        terraform_min_version = "1.5.0"
-        sentinel_min_version  = "0.20"
+        instance_type = "t3.micro"
+        instance_region = "us-east-2"
     }
 }

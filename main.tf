@@ -20,3 +20,15 @@ module "vpc" {
     Environment = var.environment
   }
 }
+
+resource "aws_instance" "instance-ejercicio-martes" {
+  ami           = "ami-00eb69d236edcfaf8"
+  instance_type = "t3.micro"
+
+  tags = {
+    Name = "Ejercicio-martes"
+  }
+}
+
+
+

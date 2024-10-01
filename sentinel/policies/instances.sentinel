@@ -1,18 +1,19 @@
+import "tfplan/v2" as tfplan
+
 param instance_type
 param instance_region
 
-valid_instance_types = ["t3.medium","t3.large"]
+valid_instance_types = ["t3.micro","t3.medium"]
 
 valid_regions = ["us-east-1","us-east-2"]
 
-is_valid_instance_type = rule {
-    instance_type in valid_instance_types
+instances_filter = filter tfplan.resource_changes as _, instance_json {
+    instance_json.type is "aws_instance" and 
+    instance_json.change.actions[0] in ["create","modify"] and
+    !(instance_json.change.after.instance_type in valid_instance_types)
 }
 
-is_valid_instance_region = rule {
-    instance_region in valid_regions
-}
 
 main = rule {
-    is_valid_instance_type and is_valid_instance_region
+    length(instances_filter) == 0
 }
